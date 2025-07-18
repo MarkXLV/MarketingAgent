@@ -1,45 +1,59 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
+import { useUser } from '@clerk/nextjs';
 
-// Message data structure
 export type Message = {
   id: string;
   author: 'user' | 'assistant';
   content: string;
+  ts?: number;
 };
 
-// ChatWindow component
-function ChatWindow({ messages }: { messages: Message[] }) {
+function MessageBubble({ msg, isUser, user }: { msg: Message; isUser: boolean; user: any }) {
+  return (
+    <div className={`flex items-end ${isUser ? 'justify-end' : 'justify-start'}`}>
+      {!isUser && (
+        <div className="w-8 h-8 rounded-full bg-green-300 flex items-center justify-center mr-2">
+          🤖
+        </div>
+      )}
+      <div
+        className={`max-w-[70%] px-4 py-2 rounded-2xl shadow transition-all
+          ${isUser ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-900'}
+        `}
+      >
+        {msg.content}
+        <div className="text-xs text-gray-500 mt-1">
+          {isUser ? user?.firstName || 'You' : 'Agent'} • {msg.ts ? new Date(msg.ts).toLocaleTimeString() : ''}
+        </div>
+      </div>
+      {isUser && user?.imageUrl && (
+        <img src={user.imageUrl} alt="avatar" className="w-8 h-8 rounded-full ml-2" />
+      )}
+    </div>
+  );
+}
+
+function ChatWindow({ messages, user }: { messages: Message[]; user: any }) {
   const bottomRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
   return (
-    <div className="flex-1 overflow-y-auto p-4 space-y-2 bg-gray-50">
+    <div className="flex-1 bg-white overflow-y-auto p-4 space-y-3">
+      {messages.length === 0 && (
+        <p className="text-gray-500 text-center">No messages yet. Start a new conversation!</p>
+      )}
       {messages.map(msg => (
-        <div
-          key={msg.id}
-          className={`flex ${msg.author === 'user' ? 'justify-end' : 'justify-start'}`}
-        >
-          <div
-            className={`max-w-[70%] px-4 py-2 rounded-2xl shadow
-              ${msg.author === 'assistant'
-                ? 'bg-green-200 text-black'
-                : 'bg-blue-600 text-white'}
-            `}
-          >
-            {msg.content}
-          </div>
-        </div>
+        <MessageBubble key={msg.id} msg={msg} isUser={msg.author === 'user'} user={user} />
       ))}
       <div ref={bottomRef} />
     </div>
   );
 }
 
-// InputBar component
-function InputBar({ onSend }: { onSend: (msg: string) => void }) {
+function InputBar({ onSend, onSaveChat, messages }: { onSend: (msg: string) => void; onSaveChat: () => void; messages: Message[] }) {
   const [text, setText] = useState('');
   const send = () => {
     if (!text.trim()) return;
@@ -47,27 +61,37 @@ function InputBar({ onSend }: { onSend: (msg: string) => void }) {
     setText('');
   };
   return (
-    <div className="flex p-4 border-t bg-white">
+    <footer className="flex items-center border-t border-gray-200 p-4 bg-white">
       <input
         value={text}
         onChange={e => setText(e.target.value)}
         onKeyDown={e => e.key === 'Enter' && send()}
-        className="flex-1 rounded-full border px-4 py-2 mr-2 focus:outline-none"
+        className="flex-1 bg-gray-50 border border-gray-300 rounded-full px-4 py-2 mr-3 placeholder-gray-400 text-gray-900 focus:outline-none"
         placeholder="Type a message…"
       />
       <button
+        className="bg-green-500 text-white rounded-full px-4 py-2 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-green-500"
         onClick={send}
-        className="bg-green-500 text-white rounded-full px-4 py-2 disabled:opacity-50"
         disabled={!text.trim()}
+        aria-label="Send message"
       >
         Send
       </button>
-    </div>
+      <button
+        className="bg-blue-500 text-white rounded-full px-4 py-2 ml-2 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        onClick={onSaveChat}
+        disabled={messages.length === 0}
+        aria-label="Save chat"
+        type="button"
+      >
+        Save Chat
+      </button>
+    </footer>
   );
 }
 
-// Main ChatWidget
-const ChatWidget: React.FC = () => {
+const ChatWidget: React.FC<{ userId: string; onSaveChat: () => void }> = ({ userId, onSaveChat }) => {
+  const { user } = useUser();
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -76,11 +100,11 @@ const ChatWidget: React.FC = () => {
       id: Date.now().toString(),
       author: 'user',
       content,
+      ts: Date.now(),
     };
     setMessages(ms => [...ms, userMsg]);
     setLoading(true);
     try {
-      // Build history as an array of { user, bot } turns
       const history: { user: string; bot?: string }[] = [];
       for (let i = 0; i < messages.length; i++) {
         if (messages[i].author === 'user') {
@@ -92,11 +116,11 @@ const ChatWidget: React.FC = () => {
           }
         }
       }
-      history.push({ user: content }); // add the new user message
+      history.push({ user: content });
       const res = await fetch('http://localhost:8000/api/marketing-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_text: content, history }),
+        body: JSON.stringify({ user_text: content, history, userId }),
       });
       if (!res.ok) {
         const err = await res.json();
@@ -107,6 +131,7 @@ const ChatWidget: React.FC = () => {
         id: Date.now().toString() + '-bot',
         author: 'assistant',
         content: data.bot_reply,
+        ts: Date.now(),
       };
       setMessages(ms => [...ms, botMsg]);
     } catch (e: any) {
@@ -114,6 +139,7 @@ const ChatWidget: React.FC = () => {
         id: Date.now().toString() + '-err',
         author: 'assistant',
         content: `⚠️ ${e.message}`,
+        ts: Date.now(),
       }]);
     } finally {
       setLoading(false);
@@ -122,8 +148,8 @@ const ChatWidget: React.FC = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      <ChatWindow messages={messages} />
-      <InputBar onSend={handleSend} />
+      <ChatWindow messages={messages} user={user} />
+      <InputBar onSend={handleSend} onSaveChat={onSaveChat} messages={messages} />
       {loading && <div className="text-center p-2 text-gray-500">Agent is typing…</div>}
     </div>
   );
