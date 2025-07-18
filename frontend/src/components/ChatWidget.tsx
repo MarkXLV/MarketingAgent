@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
+import { getApiBaseUrl } from '../api/base';
 
 export type Message = {
   id: string;
@@ -117,7 +118,8 @@ const ChatWidget: React.FC<{ userId: string; onSaveChat: () => void }> = ({ user
         }
       }
       history.push({ user: content });
-      const res = await fetch('http://localhost:8000/api/marketing-chat', {
+      const API_BASE = getApiBaseUrl();
+      const res = await fetch(API_BASE + '/api/marketing-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_text: content, history, userId }),

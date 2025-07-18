@@ -1,7 +1,5 @@
 import useSWR from 'swr';
-
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
-const fetcher = (url: string) => fetch(API_BASE + url).then(res => res.json());
+import { fetcher } from '../api/fetcher';
 
 export function HistoryPanel({ userId, onSelect, selectedConvo }: { userId: string; onSelect: (convoId: string) => void; selectedConvo: string | null }) {
   const { data: convos } = useSWR(userId ? `/api/history?userId=${userId}` : null, fetcher);

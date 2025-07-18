@@ -1,8 +1,5 @@
 import useSWR from 'swr';
-
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
-
-const fetcher = (url: string) => fetch(API_BASE + url).then(res => res.json());
+import { fetcher } from '../api/fetcher';
 
 export function ChatHistoryView({ convoId, userId }: { convoId: string, userId: string }) {
   const { data: messages } = useSWR(
