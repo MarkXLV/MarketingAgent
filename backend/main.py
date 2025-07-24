@@ -4,10 +4,22 @@ import sys
 from fastapi import FastAPI, Request, HTTPException
 from pathlib import Path
 from pydantic import BaseModel
-from .guardrails import validate_message, GuardrailError
+from guardrails import validate_message, GuardrailError
 from .openai_client import assemble_prompt, call_openai
-from .metadata import get_metadata, load_metadata
+from metadata import get_metadata, load_metadata
 
+
+# In backend/api.py
+
+from dotenv import load_dotenv
+
+# Add this line to load variables from your .env file
+load_dotenv()
+
+# --- Now your other imports can follow ---
+from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
+# ... rest of your code
 app = FastAPI()
 
 _metadata_cache = None

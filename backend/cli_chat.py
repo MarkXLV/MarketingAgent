@@ -1,7 +1,7 @@
 import sys
-from guardrails import validate_message, GuardrailError
+from .guardrails import validate_message, GuardrailError
 from openai_client import assemble_prompt, call_openai
-from marketing_agent import load_metadata, METADATA_PATH
+from .metadata import load_metadata, METADATA_PATH
 
 
 def main():
