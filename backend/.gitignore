@@ -1,1 +1,11 @@
 .env*
+
+# .gitignore
+
+# Environment variables
+.env
+.env.*
+
+# Python cache
+__pycache__/*
+*.pyc
