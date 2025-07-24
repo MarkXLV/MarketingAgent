@@ -12,7 +12,7 @@ A single-page, WhatsApp-style chatbot that:
 - **Enforces Guardrails** (no off-topic, no competitor negativity, no profanity)  
 - **Calls** OpenAI API for responses  
 - **Persists** full chat history per user/session  
-- **Minimizes** file count; two main folders (`frontend/` + `backend/`)  
+- **Minimizes** file count; two main folders (`frontend/` + `backend/`) 
 
 ---
 
