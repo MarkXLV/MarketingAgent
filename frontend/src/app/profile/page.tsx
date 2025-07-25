@@ -22,6 +22,7 @@ export default function ProfilePage() {
     e.preventDefault();
     setUser({
       ...user,
+      userId: user?.userId || 'demo-user', // Ensure userId is always a string
       name: form.name,
       email: form.email,
       gender: form.gender,
