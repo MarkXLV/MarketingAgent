@@ -10,9 +10,8 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ['@clerk/nextjs'],
   // Force all pages to be dynamic to avoid SSG issues with Clerk
   trailingSlash: false,
-  experimental: {
-    esmExternals: 'loose',
-  },
+  // Disable static optimization completely
+  output: 'standalone',
 };
 
 export default nextConfig;
