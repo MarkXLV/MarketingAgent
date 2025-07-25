@@ -55,6 +55,17 @@ async def on_startup():
 # Access cached metadata
 metadata = get_metadata()
 
+# ─── Health Check Endpoint ──────────────────────────────────────
+@app.get("/")
+async def health_check():
+    """Health check endpoint for deployment platforms"""
+    return {"status": "healthy", "message": "FinWise Marketing Agents API is running"}
+
+@app.get("/health")
+async def health():
+    """Alternative health check endpoint"""
+    return {"status": "healthy", "service": "marketing-agents-backend"}
+
 # ─── Models & Helpers ────────────────────────────────────────────
 class ChatRequest(BaseModel):
     history: list
