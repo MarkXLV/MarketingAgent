@@ -30,6 +30,12 @@ export default function Sidebar() {
       description: 'AI financial coach'
     },
     { 
+      name: 'Learning Hub', 
+      href: '/learninghub', 
+      icon: Award,
+      description: 'Learn about financial concepts',
+    },
+    { 
       name: 'Goals', 
       href: '/goals', 
       icon: Target,
@@ -50,12 +56,12 @@ export default function Sidebar() {
       description: 'Badges and milestones',
       comingSoon: true
     },
+  
     { 
       name: 'Profile', 
       href: '/profile', 
       icon: User,
       description: 'Account settings',
-      comingSoon: true
     }
   ];
 
@@ -131,7 +137,7 @@ export default function Sidebar() {
             </p>
           </div>
           <button
-            onClick={() => signOut(() => window.location.href = '/')}
+            onClick={() => signOut(() =>{ window.location.href = '/'})}
             className="w-full flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm font-medium"
           >
             <LogOut className="w-4 h-4" />

@@ -18,10 +18,13 @@ interface User {
   userId: string;
   name: string;
   email: string;
-  region: string;
-  language: string;
-  accessibility: string;
-  persona: string;
+  region?: string;
+  language?: string;
+  accessibility?: string;
+  persona?: string;
+  gender?: string;
+  occupation?: string;
+  age?: number;
 }
 
 interface Goal {

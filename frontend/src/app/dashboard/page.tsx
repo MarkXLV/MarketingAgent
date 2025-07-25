@@ -106,12 +106,11 @@ export default function DashboardPage() {
       featured: false
     },
     {
-      title: 'Learning Center',
+      title: 'Learning Hub',
       description: 'Educational content and tutorials',
       icon: BookOpen,
-      href: '/learn',
+      href: '/learninghub',
       color: 'from-indigo-500 to-indigo-600',
-      stats: 'Coming Soon',
       featured: false
     },
     {
