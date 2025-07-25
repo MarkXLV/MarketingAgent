@@ -1,0 +1,34 @@
+services:
+  # Backend API Service
+  - type: web
+    name: marketing-agents-backend
+    runtime: python
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.api:app --host=0.0.0.0 --port=$PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: OPENAI_API_KEY
+        sync: false # You'll set this manually in Render dashboard
+    healthCheckPath: /
+    
+  # Frontend Service  
+  - type: web
+    name: marketing-agents-frontend
+    runtime: node
+    env: node
+    plan: free
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: marketing-agents-backend
+          property: host
+    healthCheckPath: / 
