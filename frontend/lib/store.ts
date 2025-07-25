@@ -107,8 +107,34 @@ export const useAppStore = create<AppState>((set) => ({
 
 // Convenience hook for chat state
 export const useChatStore = () => {
-  const { conversationId, history, isLoading, setConversationId, addMessage, setLoading, clearHistory } = useAppStore();
-  return { conversationId, history, isLoading, setConversationId, addMessage, setLoading, clearHistory };
+  const { 
+    conversationId, 
+    history, 
+    isLoading, 
+    setConversationId, 
+    addMessage, 
+    setLoading, 
+    clearHistory,
+    conversations,
+    isLoadingHistory,
+    setConversations,
+    setLoadingHistory,
+    loadHistoryMessages
+  } = useAppStore();
+  return { 
+    conversationId, 
+    history, 
+    isLoading, 
+    setConversationId, 
+    addMessage, 
+    setLoading, 
+    clearHistory,
+    conversations,
+    isLoadingHistory,
+    setConversations,
+    setLoadingHistory,
+    loadHistoryMessages
+  };
 };
 
 // Convenience hook for user state

@@ -1,6 +1,6 @@
 'use client';
-import { useEffect } from 'react';
-import { useAppStore } from '../../lib/store';
+import { useEffect, useCallback } from 'react';
+import { useChatStore } from '../../lib/store';
 import { getHistory, getConversationMessages } from '../../lib/api';
 import { Clock, MessageCircle } from 'lucide-react';
 
@@ -25,14 +25,9 @@ export default function ChatHistory({ userId, onSelectConversation }: ChatHistor
     loadHistoryMessages,
     setConversationId,
     conversationId
-  } = useAppStore();
+  } = useChatStore();
 
-  // Load conversation list when component mounts
-  useEffect(() => {
-    loadConversations();
-  }, [userId]);
-
-  const loadConversations = async () => {
+  const loadConversations = useCallback(async () => {
     if (!userId) return;
     
     setLoadingHistory(true);
@@ -44,7 +39,12 @@ export default function ChatHistory({ userId, onSelectConversation }: ChatHistor
     } finally {
       setLoadingHistory(false);
     }
-  };
+  }, [userId, setConversations, setLoadingHistory]);
+
+  // Load conversation list when component mounts
+  useEffect(() => {
+    loadConversations();
+  }, [loadConversations]);
 
   const selectConversation = async (convoId: string) => {
     try {

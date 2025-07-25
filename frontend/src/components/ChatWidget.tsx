@@ -30,7 +30,9 @@ function MessageBubble({ msg, isUser, user }: { msg: Message; isUser: boolean; u
         </div>
       </div>
       {isUser && user?.imageUrl && (
-        <img src={user.imageUrl} alt="avatar" className="w-8 h-8 rounded-full ml-2" />
+        <div className="w-8 h-8 rounded-full ml-2 bg-gray-300 flex items-center justify-center text-xs">
+          {user.firstName?.[0] || 'U'}
+        </div>
       )}
     </div>
   );
