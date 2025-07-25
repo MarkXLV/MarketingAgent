@@ -22,11 +22,12 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { isLoaded, isSignedIn } = useUser();
   
-  // Don't show sidebar on auth pages or home page
+  // Don't show sidebar on auth pages, home page, or chat page (chat has its own layout)
   const showSidebar = isLoaded && isSignedIn && 
     !pathname.includes('/sign-in') && 
     !pathname.includes('/sign-up') && 
-    pathname !== '/';
+    pathname !== '/' &&
+    pathname !== '/chat';
 
   return (
     <html lang="en">
@@ -34,12 +35,14 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         {showSidebar ? (
           <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
             <Sidebar />
-            <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+            <main className="flex-1 overflow-y-auto">
               {children}
             </main>
           </div>
         ) : (
-          children
+          <div className="h-screen">
+            {children}
+          </div>
         )}
       </body>
     </html>

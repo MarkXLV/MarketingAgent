@@ -79,11 +79,33 @@ async def get_conversations(userId: str) -> List[Dict]:
     async with aiosqlite.connect(DB_PATH) as db:
         db.row_factory = aiosqlite.Row
         async with db.execute(
-            "SELECT convoId, startedAt FROM conversations WHERE userId = ? ORDER BY startedAt DESC",
+            """
+            SELECT 
+                c.convoId, 
+                c.startedAt,
+                (SELECT content FROM messages m 
+                 WHERE m.convoId = c.convoId AND m.author = 'user' 
+                 ORDER BY m.ts ASC LIMIT 1) as firstMessage
+            FROM conversations c 
+            WHERE c.userId = ? 
+            ORDER BY c.startedAt DESC
+            """,
             (userId,)
         ) as cursor:
             rows = await cursor.fetchall()
-            return [dict(row) for row in rows]
+            result = []
+            for row in rows:
+                conversation = dict(row)
+                # Generate title from first message (max 50 chars)
+                if conversation['firstMessage']:
+                    title = conversation['firstMessage'][:50]
+                    if len(conversation['firstMessage']) > 50:
+                        title += "..."
+                    conversation['title'] = title
+                else:
+                    conversation['title'] = "New Conversation"
+                result.append(conversation)
+            return result
 
 async def get_messages(convoId: str) -> List[Dict]:
     async with aiosqlite.connect(DB_PATH) as db:

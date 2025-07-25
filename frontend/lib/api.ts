@@ -53,4 +53,15 @@ export const getHistory = async (userId: string) => {
     console.error("Error fetching history:", error);
     throw error;
   }
+};
+
+// Get messages for a specific conversation
+export const getConversationMessages = async (convoId: string, userId: string) => {
+  try {
+    const response = await apiClient.get(`/history/${convoId}?userId=${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching conversation messages:", error);
+    throw error;
+  }
 }; 

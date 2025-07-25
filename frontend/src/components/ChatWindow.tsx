@@ -11,7 +11,16 @@ export default function ChatWindow() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   
-  const { history, addMessage, conversationId, setConversationId, isLoading, setLoading } = useChatStore();
+  const { 
+    conversationId, 
+    history, 
+    isLoading, 
+    addMessage, 
+    setConversationId, 
+    setLoading,
+    setConversations,
+    conversations
+  } = useChatStore();
   const { user } = useUserStore();
   
   const userId = user?.userId || 'demo-user'; // Fallback for demo
@@ -72,6 +81,17 @@ export default function ChatWindow() {
       
       if (response.convoId && response.convoId !== conversationId) {
         setConversationId(response.convoId);
+        
+        // Refresh conversation history when a new conversation is created
+        if (!conversationId) {
+          try {
+            const { getHistory } = await import('../../lib/api');
+            const updatedConversations = await getHistory(user?.userId || 'demo-user');
+            setConversations(updatedConversations);
+          } catch (error) {
+            console.error('Failed to refresh conversations:', error);
+          }
+        }
       }
 
     } catch (error) {
