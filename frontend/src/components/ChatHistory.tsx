@@ -13,8 +13,8 @@ interface ChatHistoryProps {
 //   convoId: string;
 //   startedAt: number;
 //   title: string;
-  firstMessage?: string;
-}
+//   firstMessage?: string;
+// }
 
 export default function ChatHistory({ userId, onSelectConversation }: ChatHistoryProps) {
   const { 
