@@ -9,10 +9,10 @@ interface ChatHistoryProps {
   onSelectConversation?: (convoId: string) => void;
 }
 
-interface Conversation {
-  convoId: string;
-  startedAt: number;
-  title: string;
+// interface Conversation {
+//   convoId: string;
+//   startedAt: number;
+//   title: string;
   firstMessage?: string;
 }
 
@@ -51,7 +51,7 @@ export default function ChatHistory({ userId, onSelectConversation }: ChatHistor
       const messages = await getConversationMessages(convoId, userId);
       
       // Transform messages to match our ChatMessage interface
-      const transformedMessages = messages.map((msg: any) => ({
+      const transformedMessages = messages.map((msg: { author: string; content: string; ts: number }) => ({
         id: `${msg.ts}`, // Use timestamp as ID
         author: msg.author,
         content: msg.content,
@@ -69,10 +69,10 @@ export default function ChatHistory({ userId, onSelectConversation }: ChatHistor
     }
   };
 
-  const generateTitle = (convoId: string) => {
-    // This function is no longer needed since backend provides titles
-    return `Conversation ${convoId.slice(-8)}`;
-  };
+  // const generateTitle = (convoId: string) => {
+  //   // This function is no longer needed since backend provides titles
+  //   return `Conversation ${convoId.slice(-8)}`;
+  // };
 
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);

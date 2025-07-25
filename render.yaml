@@ -25,7 +25,7 @@ services:
     startCommand: npm start
     envVars:
       - key: NODE_VERSION
-        value: 18
+        value: 22.14.0
       - key: NEXT_PUBLIC_LOCAL_API
         value: http://localhost:8000
       - key: NEXT_PUBLIC_REMOTE_API

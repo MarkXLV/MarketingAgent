@@ -11,7 +11,7 @@ export type Message = {
   ts?: number;
 };
 
-function MessageBubble({ msg, isUser, user }: { msg: Message; isUser: boolean; user: any }) {
+function MessageBubble({ msg, isUser, user }: { msg: Message; isUser: boolean; user: { firstName?: string; imageUrl?: string } | null }) {
   return (
     <div className={`flex items-end ${isUser ? 'justify-end' : 'justify-start'}`}>
       {!isUser && (
@@ -36,7 +36,7 @@ function MessageBubble({ msg, isUser, user }: { msg: Message; isUser: boolean; u
   );
 }
 
-function ChatWindow({ messages, user }: { messages: Message[]; user: any }) {
+function ChatWindow({ messages, user }: { messages: Message[]; user: { firstName?: string; imageUrl?: string } | null }) {
   const bottomRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -136,11 +136,11 @@ const ChatWidget: React.FC<{ userId: string; onSaveChat: () => void }> = ({ user
         ts: Date.now(),
       };
       setMessages(ms => [...ms, botMsg]);
-    } catch (e: any) {
+    } catch (e: unknown) {
       setMessages(ms => [...ms, {
         id: Date.now().toString() + '-err',
         author: 'assistant',
-        content: `⚠️ ${e.message}`,
+        content: `⚠️ ${e instanceof Error ? e.message : 'Unknown error'}`,
         ts: Date.now(),
       }]);
     } finally {

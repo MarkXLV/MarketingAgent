@@ -18,8 +18,7 @@ export default function ChatWindow() {
     addMessage, 
     setConversationId, 
     setLoading,
-    setConversations,
-    conversations
+    setConversations
   } = useChatStore();
   const { user } = useUserStore();
   
@@ -56,7 +55,7 @@ export default function ChatWindow() {
         const botMsg = history[i + 1];
         
         if (userMsg && userMsg.author === 'user') {
-          const exchange: any = { user: userMsg.content };
+          const exchange: { user: string; bot?: string } = { user: userMsg.content };
           if (botMsg && botMsg.author === 'assistant') {
             exchange.bot = botMsg.content;
           }
@@ -101,7 +100,7 @@ export default function ChatWindow() {
       
       // Handle guardrail errors (400) - show the actual reason
       if (error instanceof Error && 'response' in error) {
-        const axiosError = error as any;
+        const axiosError = error as { response?: { status: number; data: { detail?: string } } };
         if (axiosError.response?.status === 400) {
           errorContent = axiosError.response.data.detail || 'I cannot assist with that request.';
         }
@@ -138,7 +137,7 @@ export default function ChatWindow() {
       <div className="flex-1 p-4 overflow-y-auto space-y-4" role="log" aria-live="polite" aria-label="Chat messages">
         {history.length === 0 && (
           <div className="text-center text-gray-500 mt-8">
-            <p>👋 Hello! I'm your AI Financial Coach.</p>
+            <p>👋 Hello! I&apos;m your AI Financial Coach.</p>
             <p>Ask me about budgeting, saving, or financial planning!</p>
           </div>
         )}

@@ -10,8 +10,13 @@ const apiClient = axios.create({
 });
 
 // Example function to connect to your chat endpoint
+interface HistoryItem {
+  user: string;
+  bot?: string;
+}
+
 export const postChatMessage = async (
-  history: any[],
+  history: HistoryItem[],
   user_text: string,
   convoId: string | null,
   userId: string

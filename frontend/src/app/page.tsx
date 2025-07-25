@@ -184,7 +184,7 @@ export default function Home() {
                       <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
                     ))}
                   </div>
-                  <p className="text-gray-700 mb-4 italic">"{testimonial.quote}"</p>
+                  <p className="text-gray-700 mb-4 italic">&ldquo;{testimonial.quote}&rdquo;</p>
                   <div>
                     <p className="font-semibold text-gray-900">{testimonial.author}</p>
                     <p className="text-sm text-gray-500">{testimonial.persona}</p>
@@ -202,7 +202,7 @@ export default function Home() {
               Ready to Transform Your Financial Future?
             </h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              Join thousands of users who are already building better financial habits with FinWise. Start your journey today - it's completely free.
+              Join thousands of users who are already building better financial habits with FinWise. Start your journey today - it&apos;s completely free.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -9,7 +9,6 @@ import {
   User, 
   TrendingUp, 
   Award, 
-  Settings,
   Clock,
   BarChart3,
   BookOpen,
