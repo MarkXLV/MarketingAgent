@@ -26,7 +26,9 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 18
-      - key: NEXT_PUBLIC_API_URL
+      - key: NEXT_PUBLIC_LOCAL_API
+        value: http://localhost:8000
+      - key: NEXT_PUBLIC_REMOTE_API
         fromService:
           type: web
           name: marketing-agents-backend
