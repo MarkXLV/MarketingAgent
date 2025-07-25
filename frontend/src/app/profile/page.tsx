@@ -1,7 +1,5 @@
 'use client';
 
-// Force dynamic rendering for pages that use Clerk
-export const dynamic = 'force-dynamic';
 import { useUserStore } from '../../../lib/store';
 import { useState } from 'react';
 

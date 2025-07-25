@@ -1,7 +1,5 @@
 'use client';
 
-// Force dynamic rendering for pages that use Clerk
-export const dynamic = 'force-dynamic';
 import { useUser } from '@clerk/nextjs';
 import ChatWindow from '../../components/ChatWindow';
 import ChatHistory from '../../components/ChatHistory';
