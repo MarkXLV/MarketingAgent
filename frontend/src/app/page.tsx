@@ -1,4 +1,7 @@
 'use client';
+
+// Force dynamic rendering for pages that use Clerk
+export const dynamic = 'force-dynamic';
 import { SignedIn, SignedOut } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';

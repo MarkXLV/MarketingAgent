@@ -46,14 +46,16 @@ export default function BankingFinanceVideos() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((v, i) => (
-            <div key={i} className="w-full aspect-video">
-              <iframe
-                className="w-full h-full rounded-lg shadow-md"
-                src={`https://www.youtube.com/embed/${v.id}`}
-                title={v.title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+            <div key={i} className="w-full">
+              <div className="aspect-video">
+                <iframe
+                  className="w-full h-full rounded-lg shadow-md"
+                  src={`https://www.youtube.com/embed/${v.id}`}
+                  title={v.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
               <div className="mt-2 text-center text-sm text-gray-700">
                 {v.title}
               </div>
