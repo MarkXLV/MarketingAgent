@@ -150,7 +150,7 @@ const ChatWidget: React.FC<{ userId: string; onSaveChat: () => void }> = ({ user
 
   return (
     <div className="flex flex-col h-screen">
-      <ChatWindow messages={messages} user={user} />
+      <ChatWindow messages={messages} user={user ? { firstName: user.firstName || undefined, imageUrl: user.imageUrl } : null} />
       <InputBar onSend={handleSend} onSaveChat={onSaveChat} messages={messages} />
       {loading && <div className="text-center p-2 text-gray-500">Agent is typing…</div>}
     </div>
