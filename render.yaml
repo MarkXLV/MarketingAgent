@@ -28,11 +28,8 @@ services:
         value: 22.14.0
       - key: NEXT_PUBLIC_LOCAL_API
         value: http://localhost:8000
-      - key: NEXT_PUBLIC_REMOTE_API
-        fromService:
-          type: web
-          name: marketing-agents-backend
-          property: host
+      - key: NEXT_PUBLIC_REMOTE_API 
+        value: https://marketing-agents-backend.onrender.com
       - key: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
         sync: false # Set this in Render dashboard
       - key: CLERK_SECRET_KEY
