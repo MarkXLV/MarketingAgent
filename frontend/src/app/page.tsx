@@ -17,7 +17,7 @@ import {
   Star
 } from 'lucide-react';
 
-function RedirectToChat() {
+function RedirectToDashboard() {
   const router = useRouter();
   useEffect(() => {
     router.push('/dashboard');
@@ -33,7 +33,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       <SignedIn>
-        <RedirectToChat />
+        <RedirectToDashboard />
       </SignedIn>
       
       <SignedOut>
